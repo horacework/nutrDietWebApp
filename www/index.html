@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html> 
+    <head>
+        
+        <script>
+            (function() {
+                if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                    );
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+            })();
+        </script>
+        
+        
+        <title>jqmobi UI Starter</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes" />        
+		 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+         <link rel="stylesheet" type="text/css" href="css/icons.css" />
+         
+      <link rel="stylesheet" type="text/css" href="css/main.css"  />
+      <link rel="stylesheet" type="text/css" href="css/appframework.css"  />
+      <link rel="stylesheet" type="text/css" href="css/lists.css"  />
+      <link rel="stylesheet" type="text/css" href="css/forms.css"  />
+      <link rel="stylesheet" type="text/css" href="css/buttons.css"  />        
+      <link rel="stylesheet" type="text/css" href="css/badges.css"  />        
+      <link rel="stylesheet" type="text/css" href="css/grid.css"  />
+
+      <link rel="stylesheet" type="text/css" href="css/android.css"  />
+      <link rel="stylesheet" type="text/css" href="css/win8.css"  />
+      <link rel="stylesheet" type="text/css" href="css/bb.css"  />
+      <link rel="stylesheet" type="text/css" href="css/ios.css"  />
+      <link rel="stylesheet" type="text/css" href="css/ios7.css"  />
+      <link rel="stylesheet" type="text/css" href="css/tizen.css"  />
+      <link rel="stylesheet" type="text/css" href="css/firefox.css"  />
+        
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"  />
+      <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"  />
+      
+      
+             
+      <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+            
+      <script>
+
+            function loadedPanel(what) {
+                //We are going to set the badge as the number of li elements inside the target
+                $.ui.updateBadge("#aflink", $("#af").find("li").length);
+            }
+
+
+            function unloadedPanel(what) {
+                console.log("unloaded " + what.id);
+            }
+
+            if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+                var script = document.createElement("script");
+                script.src = "plugins/af.desktopBrowsers.js";
+                var tag = $("head").append(script);
+                //$.os.desktop=true;
+            }
+
+          //  $.feat.nativeTouchScroll=true;
+          
+        </script>        
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>          
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+        <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+        <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+        <script type="text/javascript" charset="utf-8" src="./plugins/af.8tiles.js"></script>
+        
+
+        <script type="text/javascript">
+            /* This function runs once the page is loaded, but intel.xdk is not yet active */
+            //$.ui.animateHeaders=false;
+             var search=document.location.search.toLowerCase().replace("?","");
+             //if(!search)
+            $.ui.useOSThemes=false;
+            $.ui.overlayStatusbar=true; // for ios7 only to add header padding to overlay the statusbar
+            $.ui.resetScrollers=true;
+            if(search.length>0) //Android fix has too many buggy issues on iOS - can't preview with $.os.android
+            {
+
+               $.ui.useOSThemes=true;
+                if(search=="win8")
+                    $.os.ie=true;
+                else if(search=="firefox")
+                    $.os.fennec="true"
+                $.ui.ready(function(){
+                    $("#afui").get(0).className=search;
+                });
+            }
+            
+            var webRoot = "./";
+            // $.os.android=true;
+            //$.ui.autoLaunch = true;
+            $.ui.openLinksNewTab = false;
+            $.ui.splitview=false;
+            
+
+            $().ready(function(){
+                //$.ui.launch();
+                console.log($.ui.openLinksNewTab);
+            });
+            
+            /* This code is used to run as soon as intel.xdk activates */
+            var onDeviceReady = function () {
+                $.ui.launch();
+                intel.xdk.device.setRotateOrientation("portrait");
+                intel.xdk.device.setAutoRotate(false);
+                webRoot = intel.xdk.webRoot + "";
+                //hide splash screen
+                intel.xdk.device.hideSplashScreen();
+                $.ui.blockPageScroll(); //block the page from scrolling at the header/footer
+            };
+            document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
+
+            function showHide(obj, objToHide) {
+                var el = $("#" + objToHide)[0];
+
+                if (obj.className == "expanded") {
+                    obj.className = "collapsed";
+                } else {
+                    obj.className = "expanded";
+                }
+                $(el).toggle();
+
+            }
+
+
+            if($.os.android||$.os.ie||search=="android"){
+                $.ui.ready(function(){
+                    $("#main .list").append("<li><a id='toggleAndroidTheme'>Toggle Theme Color</a></li>");
+                    var $el=$("#afui");
+                    $("#toggleAndroidTheme").bind("click",function(e){
+                        if($el.hasClass("light"))
+                            $el.removeClass("light");
+                        else
+                            $el.addClass("light");
+                    });
+                });
+            }                        
+        </script>
+      
+      
+        <!-- emulate touch on desktop browsers only -->
+       </head>
+       <script>
+           
+       </script>
+	<body>
+   		
+        <div id="afui"> 
+            <div id="content">
+            
+                <div id="home" title="首页" class="panel" selected="true" data-footer="custom_footer" data-tab="footer_home" style="overflow: auto;"> 
+               	
+                   <header> 
+                     	<h1>营养大师</h1>
+                         <a onclick="$.ui.scrollToTop('home')" class="button icon up" style="float:right" >Top</a>
+                    </header> 
+                    
+                	  <form>
+                          <div class="input-group">
+                              <label for="category">分类</label>
+                            <select id="category">
+                                <option value="0">全部</option>  
+                                <option value="1">谷类</option>  
+                                <option value="2">薯类淀粉</option>  
+                                <option value="3">干豆类</option>
+                                <option value="4">蔬菜类</option> 
+                                <option value="5">菌藻类</option>
+                                <option value="6">水果类</option>
+                                <option value="7">坚果种子</option>
+                                <option value="8">畜肉类</option> 
+                                <option value="9">禽肉类</option> 
+                                <option value="10">乳类</option>
+                                <option value="11">蛋类</option> 
+                                <option value="12">鱼虾蟹贝</option> 
+                                <option value="13">婴幼儿食品</option> 
+                            </select>
+                            <label for="element">元素</label>
+                            <select id="element">  
+                                <option value="heat">热量</option>  
+                                <option value="protein">蛋白质</option>  
+                                <option value="fat">脂肪</option>
+                                <option value="vitaminC">维他命C</option>
+                                <option value="vitaminE">维他命E</option>
+                                <option value="vitaminB1">维他命B1</option> 
+                                <option value="vitaminB2">维他命B2</option>
+                                <option value="Fe">铁</option>
+                                <option value="Zn">锌</option>
+                                <option value="Se">硒</option>
+                            </select>
+                            <label for="rank">升降序</label>
+                            <select id="rank">  
+                                <option value="up">升序</option>  
+                                <option value="down">降序</option> 
+                            </select>
+                        </div>
+                      </form>
+                      
+                      <div id="foodlist">
+                      </div>
+                
+                </div>
+                
+                <div id="count" title="营养计算" class="panel" data-header="custom_header" data-footer="custom_footer" data-tab="footer_count" data-load="show"> 
+               		
+                     
+                    关于我们11111111111
+                    
+                
+                </div>
+                
+                <div id="user" title="用户中心" class="panel" data-header="custom_header" data-footer="custom_footer" data-tab="footer_user" data-load="show"> 
+               		
+                     
+                    关于我们11111111111
+                    
+                
+                </div>
+                
+            	 <div id="about" title="关于我们" class="panel" data-header="custom_header" data-footer="custom_footer" data-tab="footer_about" data-load="show"> 
+               		
+                     
+                    <div class="middleImg"></div>
+                    
+                
+                </div>  
+                          
+            
+            
+            	 <header id="custom_header"> 
+                     	<h1>营养大师</h1>
+                 </header> 
+              	 <footer id="custom_footer"> 
+                     <a href='#home' id="footer_home" class='icon home'>查询</a>
+                     <a href='#count' id="footer_count" class='icon graph mini' data-transition="right">营养计算</a>
+                     <a href='#user' id="footer_user" class='icon user mini' data-transition="right">用户中心</a>
+                     <a href='#about' id="footer_about" class='icon info mini' data-transition="right">关于</a>
+                 </footer>
+                 
+                 
+            
+            </div>
+        </div>
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+    <script type="text/javascript">
+        $().ready(function(){
+        	getFoodList(1);
+        });
+        var page = 1;
+        $('#category').change(function () {
+            page = 1;
+            $('#foodlist').empty();
+            getFoodList(page);
+        })
+        $('#element').change(function () {
+            page = 1;
+            $('#foodlist').empty();
+            getFoodList(page);
+        })
+        $('#rank').change(function () {
+            page = 1;
+            $('#foodlist').empty();
+            getFoodList(page);
+        })
+        function show(){
+        };
+        function getFoodList(page) {
+            var categoryID = $('#category').val();
+            var elementID = $('#element').val();
+            var rank = $('#rank').val();
+            $.ajax({
+                type: "GET",
+                async:false,
+        		dataType: "jsonp",
+                
+        		url: "http://192.168.199.246:3000/getfood?category="+categoryID+"&&element="+elementID+"&&rank="+rank+"&&page="+page,
+                //demo: localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
+                //http://localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
+        		
+        		success: function(msg){
+        			
+                    var index = 0;
+                    console.log(msg);
+                    if (msg[0]==null) {
+                        alert("没有数据啦！")
+                    }else{
+                        while(msg[index]!=null){
+                            var element = msg[index];
+                            var detail1 = "热量："+element.heat+"&nbsp;&nbsp;&nbsp;&nbsp;脂肪："+element.fat+"&nbsp;&nbsp;&nbsp;&nbsp;蛋白质："+element.protein;
+                            var detail2 = "维他命B1："+element.vitaminB1+"&nbsp;&nbsp;&nbsp;&nbsp;维他命B2："+element.vitaminB2;
+                            var detail3 = "维他命C："+element.vitaminC+"&nbsp;&nbsp;&nbsp;&nbsp;维他命E："+element.vitaminE;
+                            var detail4 = "铁："+element.Fe+"&nbsp;&nbsp;&nbsp;&nbsp;锌："+element.Zn+"&nbsp;&nbsp;&nbsp;&nbsp;硒："+element.Se;
+                            var detail5 = "&nbsp;&nbsp;&nbsp;&nbsp;（单位：g/500g食材）";
+                            $('#foodlist').append($("<div class='card'><h1 class='info'>"+element.name+"</h1><p>"+detail1+"</p><p>"+detail2+"</p><p>"+detail3+"</p><p>"+detail4+"</p><p>"+detail5+"</p></div>"));
+                            index++;
+                        };
+                        page = page + 1;
+                    }
+                    
+        		},
+        		error:function(msg){
+        			alert("获取失败");
+        		}
+	       })
+
+//           $.getJSON(
+//              //"http://127.0.0.1:3000/json?callback=?",
+//             "http://localhost:3000/getfood?category="+categoryID+"&&element="+elementID+"&&rank="+rank+"&&page="+page+"&&callback=?",
+//              function(e){
+//                alert(e);
+//                console.log(e);
+//              }
+//            );
+        }
+                        
+                        var myScroller;
+                        $.ui.ready(function () {
+                            myScroller = $("#home").scroller(); //Fetch the scroller from cache
+                            //Since this is a App Framework UI scroller, we could also do
+                            // myScroller=$.ui.scrollingDivs['webslider'];
+                            myScroller.addInfinite();
+                            myScroller.addPullToRefresh();
+                            $.bind(myScroller, 'scrollend', function () {
+                                console.log("scroll end");
+                            });
+
+                            $.bind(myScroller, 'scrollstart', function () {
+                                console.log("scroll start");
+                            });
+                            
+                            $.bind(myScroller, "refresh-trigger", function () {
+                                console.log("refresh-trigger");
+								 $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
+								
+								
+								
+                            });
+                            
+                            var hideClose;
+                            $.bind(myScroller, "refresh-release", function () {
+                                console.log("refresh-release");
+                                var that = this;
+                                clearTimeout(hideClose);
+                                hideClose = setTimeout(function () {
+                                    console.log("hiding manually refresh");									
+									   $("#infinite").remove();
+									   //$('#webslider').prepend("<div>上拉增加的内容</div>");
+                                    that.hideRefresh();
+                                }, 1000);
+                                return false; //tells it to not auto-cancel the refresh
+                            });
+
+                            $.bind(myScroller, "refresh-cancel", function () {
+                                console.log("refresh-cancel");
+                                clearTimeout(hideClose);
+                            });
+                            
+                            $.bind(myScroller, "refresh-finish", function () {
+                                console.log("refresh-finish");
+                            });
+                            
+                            myScroller.enable();
+
+                            $.bind(myScroller, "infinite-scroll", function () {
+                                var self = this;
+                                console.log("infinite triggered");
+                                $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
+                                $.bind(myScroller, "infinite-scroll-end", function () {
+                                    $.unbind(myScroller, "infinite-scroll-end");
+                                    self.scrollToBottom();
+                                    setTimeout(function () {
+                                        $(self.el).find("#infinite").remove();
+                                        self.clearInfinite();
+                                        page = page + 1 ;
+                                        getFoodList(page);
+                                        //$(self.el).append("<div>下拉增加的内容This was loaded via inifinite scroll<br>More Content</div>");
+                                        //self.scrollToBottom();
+                                    }, 1000);
+                                });
+                            });
+                            //$("#home").css("overflow", "auto");
+                        });
+    </script>
+   </body>
+</html>

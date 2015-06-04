@@ -702,3 +702,20 @@ body {
         overflow:visible !important;
       }
 }
+
+/*Wrote by HoraceChan*/
+
+.middleImg{
+    width: 175px;
+    height: 10.5rem;
+    background:url(./../img/logo.png);
+    margin: 0 auto;
+    margin-top: 5em;
+}
+.aboutFont{
+    font-size: 20px;
+    color: gray;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 0.5em;
+}

@@ -217,6 +217,7 @@
                       </form>
                       
                       <div id="foodlist"></div>
+                      <a class="button block green icon add" onclick="getMoreFoodList()">加载更多</a>
                 
                 </div>
                 
@@ -260,7 +261,7 @@
                                 </select>
                                 <label for="foodWeight">重量</label>
                                 <input id="foodWeight" type="number"></input>
-                                <p style="float:right">(单位为100g)</p>
+                                <p style="float:right">(单位为500g)</p>
                             </div>
                             <div class="input-group">
                                 <label for="cate">分类</label>
@@ -288,7 +289,7 @@
                                 </select>
                                 <label for="foodWeight">重量</label>
                                 <input id="foodWeight" type="number"></input>
-                                <p style="float:right">(单位为100g)</p>
+                                <p style="float:right">(单位为500g)</p>
                             </div>
                         </div>
                         <a id="postAnalysis" class="button block blue">提交分析</a>
@@ -332,16 +333,10 @@
             
             </div>
         </div>
-    
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        app.initialize();
-    </script>
-    <script type="text/javascript">
-        $().ready(function(){
-        	getFoodList(1);
-        });
+        // $().ready(function(){
+        // 	getFoodList(1);
+        // });
         var page = 1;
         $('#category').change(function () {
             page = 1;
@@ -394,7 +389,9 @@
             //console.log($(this).next(".food").val());
             console.log($(this).parent().find("select#food").val());
         })
-        function show(){
+        function getMoreFoodList(){
+            page = page + 1 ;
+            getFoodList(page);
         };
         function getFoodList(page) {
             var categoryID = $('#category').val();
@@ -462,73 +459,78 @@
             });
         }
                         
-                        var myScroller;
-                        $.ui.ready(function () {
-                            myScroller = $("#home").scroller(); //Fetch the scroller from cache
-                            //Since this is a App Framework UI scroller, we could also do
-                            // myScroller=$.ui.scrollingDivs['webslider'];
-                            myScroller.addInfinite();
-                            myScroller.addPullToRefresh();
-                            $.bind(myScroller, 'scrollend', function () {
-                                console.log("scroll end");
-                            });
+         //                var myScroller;
+         //                $.ui.ready(function () {
+         //                    myScroller = $("#home").scroller(); //Fetch the scroller from cache
+         //                    //Since this is a App Framework UI scroller, we could also do
+         //                    // myScroller=$.ui.scrollingDivs['webslider'];
+         //                    myScroller.addInfinite();
+         //                    myScroller.addPullToRefresh();
+         //                    $.bind(myScroller, 'scrollend', function () {
+         //                        console.log("scroll end");
+         //                    });
 
-                            $.bind(myScroller, 'scrollstart', function () {
-                                console.log("scroll start");
-                            });
+         //                    $.bind(myScroller, 'scrollstart', function () {
+         //                        console.log("scroll start");
+         //                    });
                             
-                            $.bind(myScroller, "refresh-trigger", function () {
-                                console.log("refresh-trigger");
-								 $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
+         //                    $.bind(myScroller, "refresh-trigger", function () {
+         //                        console.log("refresh-trigger");
+								 // $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
 								
 								
 								
-                            });
+         //                    });
                             
-                            var hideClose;
-                            $.bind(myScroller, "refresh-release", function () {
-                                console.log("refresh-release");
-                                var that = this;
-                                clearTimeout(hideClose);
-                                hideClose = setTimeout(function () {
-                                    console.log("hiding manually refresh");									
-									   $("#infinite").remove();
-									   //$('#webslider').prepend("<div>上拉增加的内容</div>");
-                                    that.hideRefresh();
-                                }, 1000);
-                                return false; //tells it to not auto-cancel the refresh
-                            });
+         //                    var hideClose;
+         //                    $.bind(myScroller, "refresh-release", function () {
+         //                        console.log("refresh-release");
+         //                        var that = this;
+         //                        clearTimeout(hideClose);
+         //                        hideClose = setTimeout(function () {
+         //                            console.log("hiding manually refresh");									
+									//    $("#infinite").remove();
+									//    //$('#webslider').prepend("<div>上拉增加的内容</div>");
+         //                            that.hideRefresh();
+         //                        }, 1000);
+         //                        return false; //tells it to not auto-cancel the refresh
+         //                    });
 
-                            $.bind(myScroller, "refresh-cancel", function () {
-                                console.log("refresh-cancel");
-                                clearTimeout(hideClose);
-                            });
+         //                    $.bind(myScroller, "refresh-cancel", function () {
+         //                        console.log("refresh-cancel");
+         //                        clearTimeout(hideClose);
+         //                    });
                             
-                            $.bind(myScroller, "refresh-finish", function () {
-                                console.log("refresh-finish");
-                            });
+         //                    $.bind(myScroller, "refresh-finish", function () {
+         //                        console.log("refresh-finish");
+         //                    });
                             
-                            myScroller.enable();
+         //                    myScroller.enable();
 
-                            $.bind(myScroller, "infinite-scroll", function () {
-                                var self = this;
-                                console.log("infinite triggered");
-                                $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
-                                $.bind(myScroller, "infinite-scroll-end", function () {
-                                    $.unbind(myScroller, "infinite-scroll-end");
-                                    self.scrollToBottom();
-                                    setTimeout(function () {
-                                        $(self.el).find("#infinite").remove();
-                                        self.clearInfinite();
-                                        page = page + 1 ;
-                                        getFoodList(page);
-                                        //$(self.el).append("<div>下拉增加的内容This was loaded via inifinite scroll<br>More Content</div>");
-                                        //self.scrollToBottom();
-                                    }, 1000);
-                                });
-                            });
-                            //$("#home").css("overflow", "auto");
-                        });
+         //                    $.bind(myScroller, "infinite-scroll", function () {
+         //                        var self = this;
+         //                        console.log("infinite triggered");
+         //                        $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
+         //                        $.bind(myScroller, "infinite-scroll-end", function () {
+         //                            $.unbind(myScroller, "infinite-scroll-end");
+         //                            self.scrollToBottom();
+         //                            setTimeout(function () {
+         //                                $(self.el).find("#infinite").remove();
+         //                                self.clearInfinite();
+         //                                page = page + 1 ;
+         //                                getFoodList(page);
+         //                                //$(self.el).append("<div>下拉增加的内容This was loaded via inifinite scroll<br>More Content</div>");
+         //                                //self.scrollToBottom();
+         //                            }, 1000);
+         //                        });
+         //                    });
+         //                    $("#home").css("overflow", "auto");
+         //                });
+    </script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
     </script>
    </body>
 </html>

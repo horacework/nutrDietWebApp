@@ -27,13 +27,32 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('menubutton', this.onMenubutton, false);
+        document.addEventListener('backbutton', this.onBackbutton, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        //app.receivedEvent('deviceready');
+        getFoodList(1);
+    },
+    onMenubutton: function() {
+        $("#afui").popup({title: "提示",message: "Menu键有待开发"});
+    },
+    onBackbutton: function() {
+        $("#afui").popup({
+            title: "确定要退出？",
+            message: "",
+            cancelText: "取消",
+            cancelCallback: function () {},
+            doneText: "退出程序",
+            doneCallback: function () {
+                navigator.app.exitApp();
+            },
+            cancelOnly: false
+        });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

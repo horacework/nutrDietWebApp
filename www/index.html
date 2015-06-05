@@ -115,8 +115,8 @@
             
 
             $().ready(function(){
-                //$.ui.launch();
-                console.log($.ui.openLinksNewTab);
+                $.ui.launch();
+                
             });
             
             /* This code is used to run as soon as intel.xdk activates */
@@ -229,70 +229,38 @@
                         <a onclick="$.ui.scrollToTop('home')" class="button icon info" style="float:left" >
                             每日标准
                         </a>
-                        <a onclick="$.ui.scrollToTop('home')" class="button icon add" style="float:right" >
+                        <a onclick="addFood()" class="button icon add" style="float:right" >
                             添加样品
                         </a>
                     </header> 
                     <form>
                         <div id="analysisInput" class="input-group">
-                            <div class="input-group" >
-                                <label for="cate">分类</label>
-                                <select data-no="0" id="cate" class="cate">
-                                    <option value="0">全部</option>  
-                                    <option value="1">谷类</option>  
-                                    <option value="2">薯类淀粉</option>  
-                                    <option value="3">干豆类</option>
-                                    <option value="4">蔬菜类</option> 
-                                    <option value="5">菌藻类</option>
-                                    <option value="6">水果类</option>
-                                    <option value="7">坚果种子</option>
-                                    <option value="8">畜肉类</option> 
-                                    <option value="9">禽肉类</option> 
-                                    <option value="10">乳类</option>
-                                    <option value="11">蛋类</option> 
-                                    <option value="12">鱼虾蟹贝</option> 
-                                    <option value="13">婴幼儿食品</option>
+                            <div class='input-group' >
+                                <label for='cate'>分类</label>
+                                <select id='cate' class='cate'>
+                                    <option value=''>请选择</option>  
+                                    <option value='1'>谷类</option>  
+                                    <option value='2'>薯类淀粉</option>  
+                                    <option value='3'>干豆类</option>
+                                    <option value='4'>蔬菜类</option> 
+                                    <option value='5'>菌藻类</option>
+                                    <option value='6'>水果类</option>
+                                    <option value='7'>坚果种子</option>
+                                    <option value='8'>畜肉类</option> 
+                                    <option value='9'>禽肉类</option> 
+                                    <option value='10'>乳类</option>
+                                    <option value='11'>蛋类</option> 
+                                    <option value='12'>鱼虾蟹贝</option> 
+                                    <option value='13'>婴幼儿食品</option>
                                 </select>
-                                <label for="food">食物</label>
-                                <select id="food" id="food">
-                                    <option value="6">水果类</option>
-                                    <option value="7">坚果种子</option>
-                                    <option value="8">畜肉类</option>
-                                </select>
-                                <label for="foodWeight">重量</label>
-                                <input id="foodWeight" type="number"></input>
-                                <p style="float:right">(单位为500g)</p>
-                            </div>
-                            <div class="input-group">
-                                <label for="cate">分类</label>
-                                <select id="cate" class="cate" data-no='1'>
-                                    <option value="0">全部</option>  
-                                    <option value="1">谷类</option>  
-                                    <option value="2">薯类淀粉</option>  
-                                    <option value="3">干豆类</option>
-                                    <option value="4">蔬菜类</option> 
-                                    <option value="5">菌藻类</option>
-                                    <option value="6">水果类</option>
-                                    <option value="7">坚果种子</option>
-                                    <option value="8">畜肉类</option> 
-                                    <option value="9">禽肉类</option> 
-                                    <option value="10">乳类</option>
-                                    <option value="11">蛋类</option> 
-                                    <option value="12">鱼虾蟹贝</option> 
-                                    <option value="13">婴幼儿食品</option>
-                                </select>
-                                <label for="food">食物</label>
-                                <select id="food" class="food">
-                                    <option value="6">水果类</option>
-                                    <option value="7">坚果种子</option>
-                                    <option value="8">畜肉类</option>
-                                </select>
-                                <label for="foodWeight">重量</label>
-                                <input id="foodWeight" type="number"></input>
-                                <p style="float:right">(单位为500g)</p>
+                                <label for='food'>食物</label>
+                                <select id='food' id='food'></select>
+                                <label for='foodWeight'>重量</label>
+                                <input id='foodWeight' type='number'></input>
+                                <p style='float:right'>(单位为500g)</p>
                             </div>
                         </div>
-                        <a id="postAnalysis" class="button block blue">提交分析</a>
+                        <a id="postAnalysis" class="button block green">提交分析</a>
                     </form>
                     
                 
@@ -333,7 +301,7 @@
             
             </div>
         </div>
-    <script type="text/javascript">
+    <script type="text/javascript" async="defer">
         // $().ready(function(){
         // 	getFoodList(1);
         // });
@@ -385,10 +353,51 @@
             });
         })
         $(".cate").change(function () {
-            //var a = $(this).next(".food").val();
-            //console.log($(this).next(".food").val());
-            console.log($(this).parent().find("select#food").val());
-        })
+            var cateID = $(this).val();
+            var foodContent = "";
+            var locationDiv = $(this).parent().find("select#food");
+            //$(this).parent().find("select#food").queue(function () {
+                getFoodOption(cateID ,locationDiv);
+                //$(this).dequeue();
+            //});
+            //$(this).parent().find("select#food").queue(function () {
+                //$(this).parent().find("select#food").empty().append($(foodContent));
+                //$(this).dequeue();
+            //});
+        });
+        function addFood( ) {
+            $('#analysisInput').append(
+                $(
+                " <div class='input-group' ><label for='cate'>分类</label><select id='cate' class='cate'><option value=''>请选择</option><option value='1'>谷类</option>option value='2'>薯类淀粉</option><option value='3'>干豆类</option><option value='4'>蔬菜类</option><option value='5'>菌藻类</option><option value='6'>水果类</option><option value='7'>坚果种子</option><option value='8'>畜肉类</option><option value='9'>禽肉类</option><option value='10'>乳类</option><option value='11'>蛋类</option><option value='12'>鱼虾蟹贝</option><option value='13'>婴幼儿食品</option></select><label for='food'>食物</label><select id='food' id='food'></select><label for='foodWeight'>重量</label><input id='foodWeight' type='number'></input><p style='float:right'>(单位为500g)</p></div>"));
+        }
+        function getFoodOption(cateID,locationDiv){
+            $.ajax({
+                type: "GET",
+                dataType:"json",
+                url:"http://192.168.199.246:3000/getfoodlist?category="+cateID,
+                success:function(msg){
+                    var foodCount = 0;
+                    var foodContent = "";
+                    while(true){
+                        if (msg[foodCount]==null) {
+                            console.log('gogog');
+                            console.log(foodContent);
+                            locationDiv.empty().append($(foodContent));
+                            break;
+                            //return foodContent;
+                            
+                        } else{
+                            var foodSelect = "<option value='"+msg[foodCount].id+"'>"+msg[foodCount].name+"</option>";
+                            foodContent +=foodSelect;
+                            foodCount++;
+                        };
+                    };  
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
         function getMoreFoodList(){
             page = page + 1 ;
             getFoodList(page);

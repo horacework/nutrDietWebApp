@@ -27,7 +27,7 @@ function getFoodList(page) {
         async:false,
         dataType: "jsonp",
         
-        url: "http://192.168.199.246:3000/getfood?category="+categoryID+"&&element="+elementID+"&&rank="+rank+"&&page="+page,
+        url: serverUrl+"/getfood?category="+categoryID+"&&element="+elementID+"&&rank="+rank+"&&page="+page,
         //demo: localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
         //http://localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
         

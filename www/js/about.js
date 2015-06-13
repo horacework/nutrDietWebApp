@@ -3,7 +3,7 @@ $('#checkUpdate').click(function () {
     $.ajax({
         type: "GET",
         dataType: "jsonp",
-        url:"http://192.168.199.246:3000/android/update",
+        url: serverUrl+"/android/update",
         success: function(msg) {
             console.log(msg);
             if (versionNow==msg.version) {

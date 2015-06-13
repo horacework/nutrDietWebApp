@@ -9,7 +9,7 @@ $("#postAnalysis").click(function(){
     $.ajax({
         type: "POST",
         dataType:"json",
-        url:"http://192.168.199.246:3000/foodconsum",
+        url:serverUrl+"/foodconsum",
         success:function(msg){
             var w = JSON.stringify(msg);
              $("#afui").popup({
@@ -49,7 +49,7 @@ function getFoodOption(cateID,locationDiv){
     $.ajax({
         type: "GET",
         dataType:"json",
-        url:"http://192.168.199.246:3000/getfoodlist?category="+cateID,
+        url:serverUrl+"/getfoodlist?category="+cateID,
         success:function(msg){
             var foodCount = 0;
             var foodContent = "";

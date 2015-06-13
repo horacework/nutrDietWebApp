@@ -30,7 +30,7 @@ function loginBtnFun() {
             type: "POST",
             dataType: "json",
             data: data,
-            url:"http://192.168.199.246:3000/login",
+            url:serverUrl+"/login",
             success:function(user){
                 if (user != undefined) {
                     $('#userLogin').hide();
@@ -61,7 +61,7 @@ function signupBtnFun() {
             type: "POST",
             dataType: "json",
             data: data,
-            url:"http://192.168.199.246:3000/signup",
+            url:serverUrl+"/signup",
             success:function(user){
                 if (user != undefined) {
                     $('#userSignup').hide();

@@ -26,7 +26,7 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', this.getFoodList, false);
         document.addEventListener('menubutton', this.onMenubutton, false);
         document.addEventListener('backbutton', this.onBackbutton, false);
     },
@@ -34,9 +34,11 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+    getFoodList: function() {
         //app.receivedEvent('deviceready');
-        getFoodList(1);
+        // console.log("111111");
+        // getFoodList(1);
+        // console.log("1222222");
     },
     onMenubutton: function() {
         $("#afui").popup({title: "提示",message: "Menu键有待开发"});

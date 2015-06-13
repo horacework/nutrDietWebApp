@@ -482,8 +482,29 @@
                 
                 <div id="user" title="用户中心" class="panel" data-header="custom_header" data-footer="custom_footer" data-tab="footer_user" data-load="loginPopup"> 
                		
-                     
-                    <div id="userShow" class="aboutFont">未登录</div>
+                     <form id="userLogin" style="display:none">
+                        <div class="input-group">
+                            <label for="loginUserName">用户名</label>
+                            <input id="loginUserName" type="text">
+                            <label for="loginPassWord">密码</label>
+                            <input id="loginPassWord" type="password">
+                            <a id="loginToSignup" class="button red next" style="float:right">转到注册</a>
+                        </div>
+                        <a id="loginBtn" class="button block green">登录</a>
+                     </form>
+                    <form id="userSignup" style="display:none">
+                        <div class="input-group">
+                            <label for="signupUserName">用户名</label>
+                            <input id="signupUserName" type="text">
+                            <label for="signupPassWord1">密码</label>
+                            <input id="signupPassWord1" type="password">
+                            <label for="signupPassWord2">重复密码</label>
+                            <input id="signupPassWord2" type="password">
+                            <a id="signupToLogin" class="button red next" style="float:right">转到登录</a>
+                        </div>
+                        <a id="signupBtn" class="button block green">注册</a>
+                     </form>
+                    <div id="userShow" class="aboutFont" style="display:none"></div>
                     
                 
                 </div>
@@ -515,316 +536,11 @@
             
             </div>
         </div>
-    <script type="text/javascript" async="defer">
-        $().ready(function(){
-        	getFoodList(1);
-        });
-        var page = 1;
-        var foodNum = 0;
-        var tokenID = null;
-        // var loginPost = {
-        //     username :
-        // };
-        $('#category').change(function () {
-            page = 1;
-            $('#foodlist').empty();
-            getFoodList(page);
-        })
-        $('#element').change(function () {
-            page = 1;
-            $('#foodlist').empty();
-            getFoodList(page);
-        })
-        $('#rank').change(function () {
-            page = 1;
-            $('#foodlist').empty();
-            getFoodList(page);
-        })
-        $('#checkUpdate').click(function () {
-            var versionNow = $('#versionNum').text();
-            $.ajax({
-                type: "GET",
-                dataType: "jsonp",
-                url:"http://192.168.199.246:3000/android/update",
-                success: function(msg) {
-                    console.log(msg);
-                    if (versionNow==msg.version) {
-                        $("#afui").popup("目前版本为最新");
-                    }else{
-                        $("#afui").popup({
-                            title: "检测到新版本，立即更新？",
-                            message: "",
-                            cancelText: "取消",
-                            cancelCallback: function () {
-                                
-                            },
-                            doneText: "确定",
-                            doneCallback: function () {
-                                window.open("http://www.horacework.com", "_system");
-                            },
-                            cancelOnly: false
-                        });
-                    }
-                },
-                error:function(msg){
-                    $("#afui").popup("获取版本失败");
-                }
-            });
-        });
-        $("#postAnalysis").click(function(){
-            var postData = {};
-            for (var i = 0; i <= foodNum; i++) {
-                postData[i] = {};
-                postData[i].id = $("#analysisInput .input-group[data-num='"+i+"'] #food").val();
-                postData[i].weight = $("#analysisInput .input-group[data-num='"+i+"'] #foodWeight").val();
-            };
-            $.ajax({
-                type: "POST",
-                dataType:"json",
-                url:"http://192.168.199.246:3000/foodconsum",
-                success:function(msg){
-                    var w = JSON.stringify(msg);
-                     $("#afui").popup({
-                        title: "Login",
-                        message: w,
-                        cancelText: "不保存",
-                        cancelCallback: function () {},
-                        doneText: "保存",
-                        doneCallback: function () {
-                            $("#afui").popup('保存功能需要做完用户管理才有。');
-                        },
-                        cancelOnly: false
-                    });
-                },
-                error:function(msg){
-                    console.log(msg);
-                }
-            });
-        });
-        $('.cate').change(function () {
-            var cateID = $(this).val();
-            var locationDiv = $(this).parent().find('select#food');
-            getFoodOption(cateID ,locationDiv);
-        });
-        function addFood( ) {
-            foodNum += 1;
-            if (foodNum>9) {
-                $("#afui").popup("太多啦！");
-            } else{
-                $(".input-group[data-num='"+foodNum+"']").show();
-            };
-            // $('#analysisInput').append(
-            //     $(
-            //     " <div class='input-group' ><label for='cate'>分类</label><select id='cate' class='cate'><option value=''>请选择</option><option value='1'>谷类</option>option value='2'>薯类淀粉</option><option value='3'>干豆类</option><option value='4'>蔬菜类</option><option value='5'>菌藻类</option><option value='6'>水果类</option><option value='7'>坚果种子</option><option value='8'>畜肉类</option><option value='9'>禽肉类</option><option value='10'>乳类</option><option value='11'>蛋类</option><option value='12'>鱼虾蟹贝</option><option value='13'>婴幼儿食品</option></select><label for='food'>食物</label><select id='food' id='food'></select><label for='foodWeight'>重量</label><input id='foodWeight' type='number'></input><p style='float:right'>(单位为500g)</p></div><script>$('.cate').change(function () {var cateID = $(this).val();var locationDiv = $(this).parent().find('select#food');getFoodOption(cateID ,locationDiv);});</ script>"));
-        }
-        function getFoodOption(cateID,locationDiv){
-            $.ajax({
-                type: "GET",
-                dataType:"json",
-                url:"http://192.168.199.246:3000/getfoodlist?category="+cateID,
-                success:function(msg){
-                    var foodCount = 0;
-                    var foodContent = "";
-                    while(true){
-                        if (msg[foodCount]==null) {
-                            locationDiv.empty().append($(foodContent));
-                            break;
-                            //return foodContent;
-                            
-                        } else{
-                            var foodSelect = "<option value='"+msg[foodCount].id+"'>"+msg[foodCount].name+"</option>";
-                            foodContent +=foodSelect;
-                            foodCount++;
-                        };
-                    };  
-                },
-                error:function(msg){
-                    console.log(msg);
-                }
-            });
-        }
-        function getMoreFoodList(){
-            page = page + 1 ;
-            getFoodList(page);
-        };
-        function getFoodList(page) {
-            var categoryID = $('#category').val();
-            var elementID = $('#element').val();
-            var rank = $('#rank').val();
-            $.ajax({
-                type: "GET",
-                async:false,
-        		dataType: "jsonp",
-                
-        		url: "http://192.168.199.246:3000/getfood?category="+categoryID+"&&element="+elementID+"&&rank="+rank+"&&page="+page,
-                //demo: localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
-                //http://localhost:3000/getfood?category=2&&element=Fe&&rank=down&&page=1
-        		
-        		success: function(msg){
-        			
-                    var index = 0;
-                    if (msg[0]==null) {
-                        $("#afui").popup("没有数据啦！");
-                    }else{
-                        while(msg[index]!=null){
-                            var element = msg[index];
-                            var detail1 = "热量："+element.heat+"&nbsp;&nbsp;&nbsp;&nbsp;脂肪："+element.fat+"&nbsp;&nbsp;&nbsp;&nbsp;蛋白质："+element.protein;
-                            var detail2 = "维他命B1："+element.vitaminB1+"&nbsp;&nbsp;&nbsp;&nbsp;维他命B2："+element.vitaminB2;
-                            var detail3 = "维他命C："+element.vitaminC+"&nbsp;&nbsp;&nbsp;&nbsp;维他命E："+element.vitaminE;
-                            var detail4 = "铁："+element.Fe+"&nbsp;&nbsp;&nbsp;&nbsp;锌："+element.Zn+"&nbsp;&nbsp;&nbsp;&nbsp;硒："+element.Se;
-                            var detail5 = "&nbsp;&nbsp;&nbsp;&nbsp;（单位：g/500g食材）";
-                            $('#foodlist').append($("<div class='card'><h1 class='info'>"+element.name+"</h1><p>"+detail1+"</p><p>"+detail2+"</p><p>"+detail3+"</p><p>"+detail4+"</p><p>"+detail5+"</p></div>"));
-                            index++;
-                        };
-                        page = page + 1;
-                    }
-                    
-        		},
-        		error:function(msg){
-        			$("#afui").popup("获取失败");
-        		}
-	       })
-        }
-        function analysisPopup() {
-            $("#afui").popup({
-                title: "Login",
-                message: "Username: <input type='text' class='af-ui-forms'><br>Password: <input type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
-                cancelText: "Cancel",
-                cancelCallback: function () {},
-                doneText: "Login",
-                doneCallback: function () {
-                    alert("Logging in")
-                },
-                cancelOnly: false
-            });
-        }
-        function loginPopup() {
-            if (tokenID == null) {
-                $("#afui").popup({
-                    title: "Login",
-                    message: "Username: <input id='username' type='text' class='af-ui-forms' name='username'><br>Password: <input id='password' name='username' type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
-                    cancelText: "Cancel",
-                    cancelCallback: function () {
-
-                    },
-                    doneText: "Login",
-                    doneCallback: function () {
-                        //$('#afui').popup('骗你的。登录功能还没做呢~');
-                        var data = {
-                            username : $('#username').val(),
-                            password : $('#password').val()
-                        };
-                        $.ajax({
-                            type: "POST",
-                            dataType: "json",
-                            data: data,
-                            url:"http://192.168.199.246:3000/login",
-                            success:function(user){
-                                if (user != undefined) {
-                                    // $('#userShow').html('欢迎你，'+user.name);
-                                    console.log('1111');
-                                    $('#userShow').hide();
-                                    tokenID = user.tokenID;
-                                } else{
-                                    $("#afui").popup({message:'用户名或密码错误！'});
-                                };
-                                
-                            },
-                            error:function(msg){
-                                console.log(msg);
-                            }
-                        })
-                    },
-                    cancelOnly: false
-                });
-            } else{
-                showUser();
-            };
-            
-        }
-        function showUser(){
-            $.ajax({
-                type: "POST",
-                dataType:"json",
-                url:"http://192.168.199.246:3000/getUserInfo?"+tokenID,
-                success:function(user){
-                    $('#userShow').text('欢迎你，'+user.name);
-                },
-                error:function(msg){
-                    console.log(msg);
-                }
-            })
-            
-        }
-                        
-         //                var myScroller;
-         //                $.ui.ready(function () {
-         //                    myScroller = $("#home").scroller(); //Fetch the scroller from cache
-         //                    //Since this is a App Framework UI scroller, we could also do
-         //                    // myScroller=$.ui.scrollingDivs['webslider'];
-         //                    myScroller.addInfinite();
-         //                    myScroller.addPullToRefresh();
-         //                    $.bind(myScroller, 'scrollend', function () {
-         //                        console.log("scroll end");
-         //                    });
-
-         //                    $.bind(myScroller, 'scrollstart', function () {
-         //                        console.log("scroll start");
-         //                    });
-                            
-         //                    $.bind(myScroller, "refresh-trigger", function () {
-         //                        console.log("refresh-trigger");
-								 // $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
-								
-								
-								
-         //                    });
-                            
-         //                    var hideClose;
-         //                    $.bind(myScroller, "refresh-release", function () {
-         //                        console.log("refresh-release");
-         //                        var that = this;
-         //                        clearTimeout(hideClose);
-         //                        hideClose = setTimeout(function () {
-         //                            console.log("hiding manually refresh");									
-									//    $("#infinite").remove();
-									//    //$('#webslider').prepend("<div>上拉增加的内容</div>");
-         //                            that.hideRefresh();
-         //                        }, 1000);
-         //                        return false; //tells it to not auto-cancel the refresh
-         //                    });
-
-         //                    $.bind(myScroller, "refresh-cancel", function () {
-         //                        console.log("refresh-cancel");
-         //                        clearTimeout(hideClose);
-         //                    });
-                            
-         //                    $.bind(myScroller, "refresh-finish", function () {
-         //                        console.log("refresh-finish");
-         //                    });
-                            
-         //                    myScroller.enable();
-
-         //                    $.bind(myScroller, "infinite-scroll", function () {
-         //                        var self = this;
-         //                        console.log("infinite triggered");
-         //                        $(this.el).append("<div id='infinite' style='height:60px;line-height:60px;text-align:center;font-weight:bold'>正在加载请稍后...</div>");
-         //                        $.bind(myScroller, "infinite-scroll-end", function () {
-         //                            $.unbind(myScroller, "infinite-scroll-end");
-         //                            self.scrollToBottom();
-         //                            setTimeout(function () {
-         //                                $(self.el).find("#infinite").remove();
-         //                                self.clearInfinite();
-         //                                page = page + 1 ;
-         //                                getFoodList(page);
-         //                                //$(self.el).append("<div>下拉增加的内容This was loaded via inifinite scroll<br>More Content</div>");
-         //                                //self.scrollToBottom();
-         //                            }, 1000);
-         //                        });
-         //                    });
-         //                    $("#home").css("overflow", "auto");
-         //                });
-    </script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/foodInfo.js"></script>
+    <script type="text/javascript" src="js/analysis.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
+    <script type="text/javascript" src="js/about.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">

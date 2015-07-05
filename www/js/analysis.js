@@ -6,14 +6,17 @@ $("#postAnalysis").click(function(){
         postData[i].id = $("#analysisInput .input-group[data-num='"+i+"'] #food").val();
         postData[i].weight = $("#analysisInput .input-group[data-num='"+i+"'] #foodWeight").val();
     };
+    console.log(postData);
     $.ajax({
-        type: "POST",
-        dataType:"json",
+        type: "GET",
+        dataType:"jsonp",
+        data:postData,
         url:serverUrl+"/foodconsum",
         success:function(msg){
-            var w = JSON.stringify(msg);
+            console.log(msg);
+            var w = disposalData(msg);
              $("#afui").popup({
-                title: "Login",
+                title: "分析结果",
                 message: w,
                 cancelText: "不保存",
                 cancelCallback: function () {},
@@ -29,6 +32,70 @@ $("#postAnalysis").click(function(){
         }
     });
 });
+function disposalData(msg){
+    var retData = "";
+    retData += "营养结构：<br>" 
+    if (msg.result.judge.Fe=="over") {
+        retData += "铁元素：过多"
+    }else if(msg.result.judge.Fe=="lack"){
+        retData += "铁元素：过少"
+    };
+    retData += "("+parseInt(msg.result.diff.Fe)+"mg)<br>"; 
+    if (msg.result.judge.Se=="over") {
+        retData += "硒元素：过多"
+    }else if(msg.result.judge.Se=="lack"){
+        retData += "硒元素：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.Se)+"μg)<br>"; 
+    if (msg.result.judge.Zn=="over") {
+        retData += "锌元素：过多"
+    }else if(msg.result.judge.Zn=="lack"){
+        retData += "锌元素：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.Zn)+"mg)<br>"; 
+    if (msg.result.judge.fat=="over") {
+        retData += "脂肪：过多"
+    }else if(msg.result.judge.fat=="lack"){
+        retData += "脂肪：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.fat)+"g)<br>"; 
+    if (msg.result.judge.protein=="over") {
+        retData += "蛋白：过多"
+    }else if(msg.result.judge.protein=="lack"){
+        retData += "蛋白：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.protein)+"kcal)<br>"; 
+    if (msg.result.judge.vitaminB1=="over") {
+        retData += "脂肪：过多"
+    }else if(msg.result.judge.vitaminB1=="lack"){
+        retData += "脂肪：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.vitaminB1)+"mg)<br>"; 
+    if (msg.result.judge.vitaminB2=="over") {
+        retData += "脂肪：过多"
+    }else if(msg.result.judge.vitaminB2=="lack"){
+        retData += "脂肪：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.vitaminB2)+"mg)<br>"; 
+    if (msg.result.judge.vitaminC=="over") {
+        retData += "脂肪：过多"
+    }else if(msg.result.judge.vitaminC=="lack"){
+        retData += "脂肪：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.vitaminC)+"mg)<br>"; 
+    if (msg.result.judge.vitaminE=="over") {
+        retData += "脂肪：过多"
+    }else if(msg.result.judge.vitaminE=="lack"){
+        retData += "脂肪：过少"
+    };
+    retData += "("+Math.round(msg.result.diff.vitaminE)+"mg)<br>"; 
+
+    retData += "饮食建议：<br><br>" ;
+    retData += "适量多吃："+msg.advice.moreEat+"<br><br>" ;
+    retData += "尽量少吃吃："+msg.advice.lessEat+"<br>" ;
+
+    return retData
+}
 $('.cate').change(function () {
     var cateID = $(this).val();
     var locationDiv = $(this).parent().find('select#food');
@@ -47,10 +114,11 @@ function addFood( ) {
 }
 function getFoodOption(cateID,locationDiv){
     $.ajax({
-        type: "GET",
-        dataType:"json",
+        type: "POST",
+        dataType:"jsonp",
         url:serverUrl+"/getfoodlist?category="+cateID,
         success:function(msg){
+            //console.log(msg);
             var foodCount = 0;
             var foodContent = "";
             while(true){
@@ -71,10 +139,13 @@ function getFoodOption(cateID,locationDiv){
         }
     });
 }
+function perDayStandard(){
+    $("#afui").popup("能量：2300 kcal <br>蛋白：70g <br>脂肪：60g <br>锌：11.5mg <br>铁：20mg<br>硒：50μg <br>维生素C：100mg<br>维生素B1：1.3mg<br>维生素B2：1.2mg<br>维生素E：14mg");
+}
 function analysisPopup() {
     $("#afui").popup({
         title: "Login",
-        message: "Username: <input type='text' class='af-ui-forms'><br>Password: <input type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
+        message: "能量：2300 kcal <br>蛋白：70g <br>脂肪：60g <br>锌：11.5mg <br>铁：20mg<br>硒：50μg <br>维生素C：100mg<br>维生素B1：1.3mg<br>维生素B2：1.2mg<br>维生素E：14mg",
         cancelText: "Cancel",
         cancelCallback: function () {},
         doneText: "Login",
